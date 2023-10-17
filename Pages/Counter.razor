@@ -1,0 +1,71 @@
+﻿@page "/counter"
+
+@using WebSocketSharp;
+@using BlazorTest.Data;
+
+@inject WebSocketTestService webSocketTestService
+
+<PageTitle>Bazler WebSocket Test</PageTitle>
+
+<h5>Web Socket Tester</h5>
+
+<p role="status">Last Server Query: @m_serveryQuery</p>
+<p role="status">Web Socket Information: @m_wsInfo</p>
+
+<button class="btn btn-primary" @onclick="StartServer">Start Server</button>
+<button class="btn btn-primary" @onclick="UseClient">Use Client</button>
+<button class="btn btn-primary" @onclick="QueryServer">Query Server</button>
+
+@code {
+
+    private string m_wsInfo = "";
+    private string m_serveryQuery = "";
+    private WebSocket? m_WSClient = null;
+
+    private void StartServer()
+    {
+        webSocketTestService.StartServer();
+    }
+
+    private void QueryServer()
+    {
+        m_serveryQuery = webSocketTestService.QueryServer();
+    }
+
+    private void UseClient()
+    {
+        if (m_WSClient == null)
+        {
+            m_WSClient = new WebSocket("ws://localhost:3333/Laputa");  // Can use network IP address here insetad of localhost
+
+            //m_WSClient = new WebSocket("wss://myazurewebsite.azurewebsites.net:3333/Laputa");
+
+            m_WSClient.OnMessage += (WSsender, WSevent) =>
+            {
+                m_wsInfo += " " + WSevent.Data;
+
+                InvokeAsync(StateHasChanged);
+            };
+
+            m_WSClient.OnOpen += (WSsender, WSevent) =>
+            {
+                m_wsInfo = "Opened";
+            };
+
+            m_WSClient.OnError += (WSsender, WSevent) =>
+            {
+                m_wsInfo += " Error";
+            };
+
+            m_WSClient.OnClose += (WSsender, WSevent) =>
+            {
+                m_WSClient = null;
+                m_wsInfo += " Closed";
+            };
+
+            m_WSClient.Connect();
+        }
+
+        m_WSClient?.Send("Dave");
+    }
+}

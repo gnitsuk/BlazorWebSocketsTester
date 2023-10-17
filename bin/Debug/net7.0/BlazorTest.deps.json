@@ -1,0 +1,39 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "BlazorTest/1.0.0": {
+        "dependencies": {
+          "websocket-sharp": "1.0.2.59611"
+        },
+        "runtime": {
+          "BlazorTest.dll": {}
+        }
+      },
+      "websocket-sharp/1.0.2.59611": {
+        "runtime": {
+          "websocket-sharp.dll": {
+            "assemblyVersion": "1.0.2.59611",
+            "fileVersion": "1.0.2.59611"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "BlazorTest/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "websocket-sharp/1.0.2.59611": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
